@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+.Python
+pip-wheel-metadata/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Locust / results: inclua se quiser versionar os CSVs; remova se não quiser
+# results/*.csv
