@@ -14,4 +14,7 @@ pip-wheel-metadata/
 Thumbs.db
 
 # Locust / results: inclua se quiser versionar os CSVs; remova se não quiser
-# results/*.csv
+results/*.csv
+
+# Adicionar a pasta plots para versionamento
+!report/plots/
