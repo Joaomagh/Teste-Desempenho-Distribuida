@@ -51,7 +51,7 @@ Os resultados dos testes foram coletados em arquivos CSV e analisados para gerar
 
 O gráfico abaixo resume as principais métricas coletadas durante os testes de desempenho:
 
-![Comparação de Desempenho](report/plots/performance_comparison.png)
+![Comparação de Desempenho](performance_comparison.png)
 
 **Análise:**
 
