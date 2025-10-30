@@ -2,28 +2,62 @@
 
 Este repositório contém os scripts e resultados dos testes de desempenho realizados na aplicação "Link Extractor", como parte do Trabalho 4.
 
-O objetivo é comparar o desempenho de duas implementações de API (Python e Ruby), com e sem o uso de cache (Redis), sob diferentes níveis de carga.
+O objetivo foi comparar o desempenho de duas implementações de API (Python e Ruby), com e sem o uso de cache (Redis), sob diferentes níveis de carga.
 
-## Status Atual do Projeto
+## Equipe
 
-Até o momento, as seguintes etapas foram concluídas:
+- João Pedro Rego Magalhães - Matrícula: 2517985
+- João Pedro Monteiro
+- José Ricardo Ladislau Colombo 2315044
 
-1.  **Ambiente Configurado**: A aplicação `linkextractor` foi configurada e está rodando em contêineres Docker, orquestrados com `docker-compose`. O ambiente inclui:
-    *   Servidor Web (PHP)
-    *   Servidor de API (inicialmente com a versão Ruby)
-    *   Servidor de Cache (Redis)
+## Ferramenta de Teste de Carga
 
-2.  **Script de Teste Criado**: Um script `locustfile.py` foi desenvolvido para simular o comportamento do usuário. Cada usuário virtual executa uma sequência de 10 requisições `POST` para a API, extraindo links de 10 URLs diferentes.
+Utilizamos o **Locust** como ferramenta de teste de carga. O Locust é uma ferramenta de código aberto que permite simular o comportamento de usuários virtuais acessando uma aplicação. O script de configuração, `locustfile.py`, foi desenvolvido para simular o seguinte comportamento:
 
-3.  **Primeira Bateria de Testes Executada**: Os testes para a **API em Ruby com cache ativado** foram concluídos. Os seguintes cenários de carga foram executados:
-    *   1 Usuário Virtual
-    *   10 Usuários Virtuais
-    *   50 Usuários Virtuais
-    *   100 Usuários Virtuais
+- Cada usuário virtual realiza uma sequência de 10 requisições `GET` para a API.
+- As URLs testadas são endpoints da aplicação "Link Extractor".
+- O tempo de espera entre as requisições varia entre 1 e 2 segundos.
 
-4.  **Resultados Coletados**: Os resultados brutos para cada um dos testes acima foram salvos em formato `.csv` no diretório `/results`.
+### Configuração do Script
 
-5.  **Controle de Versão**: O projeto foi versionado com Git e enviado para este repositório no GitHub.
+O script `locustfile.py` define a classe `LinkExtractorUser`, que herda de `HttpUser`. Cada usuário virtual executa a tarefa `extract_links_sequence`, que realiza as requisições para os endpoints da API. O tempo de espera entre as requisições é configurado com `wait_time = between(1, 2)`.
+
+## Cenários de Teste Avaliados
+
+Foram avaliados quatro cenários principais:
+
+1. **Python sem Cache**: API desenvolvida em Python, sem uso de Redis.
+2. **Python com Cache**: API desenvolvida em Python, utilizando Redis para cache.
+3. **Ruby sem Cache**: API desenvolvida em Ruby, sem uso de Redis.
+4. **Ruby com Cache**: API desenvolvida em Ruby, utilizando Redis para cache.
+
+Para cada cenário, foram realizados testes com os seguintes níveis de carga:
+
+- 1 Usuário Virtual
+- 10 Usuários Virtuais
+- 50 Usuários Virtuais
+
+## Resultados
+
+Os resultados dos testes foram coletados em arquivos CSV e analisados para gerar os gráficos abaixo:
+
+### Tempo Médio de Resposta
+
+### Throughput (Requisições por Segundo)
+
+### Taxa de Falha (%)
+
+## Comparação de Desempenho
+
+O gráfico abaixo resume as principais métricas coletadas durante os testes de desempenho:
+
+![Comparação de Desempenho](report/plots/performance_comparison.png)
+
+**Análise:**
+
+- O uso de cache (Redis) reduz significativamente o tempo de resposta e elimina falhas em ambos os ambientes.
+- A API em Ruby com cache apresentou o menor tempo médio de resposta e alta estabilidade.
+- A API em Python com cache apresentou o maior throughput, destacando-se em cenários de alta carga.
 
 ## Como Executar o Projeto
 
@@ -31,9 +65,9 @@ Siga os passos abaixo para replicar o ambiente e executar os testes.
 
 ### Pré-requisitos
 
-*   Git
-*   Docker e Docker Compose
-*   Python 3.x e Pip
+- Git
+- Docker e Docker Compose
+- Python 3.x e Pip
 
 ### 1. Clonar o Repositório
 
@@ -78,32 +112,13 @@ locust -f locustfile.py --host http://localhost:4567 --users 1 --spawn-rate 1 --
 
 **Parâmetros do comando:**
 
-*   `--host`: A URL da API que será testada.
-*   `--users`: O número de usuários virtuais a serem simulados.
-*   `--spawn-rate`: A taxa de novos usuários iniciados por segundo.
-*   `--run-time`: A duração total do teste (ex: `1m` para 1 minuto).
-*   `--headless`: Executa o teste sem a interface web do Locust.
-*   `--csv`: Salva os resultados em arquivos CSV com o prefixo especificado.
+- `--host`: A URL da API que será testada.
+- `--users`: O número de usuários virtuais a serem simulados.
+- `--spawn-rate`: A taxa de novos usuários iniciados por segundo.
+- `--run-time`: A duração total do teste (ex: `1m` para 1 minuto).
+- `--headless`: Executa o teste sem a interface web do Locust.
+- `--csv`: Salva os resultados em arquivos CSV com o prefixo especificado.
 
-## Próximos Passos (O Que Falta Fazer)
+## Conclusão
 
-A lista abaixo detalha as etapas restantes para a conclusão do trabalho.
-
-1.  **Executar Testes com API Ruby (Cache Desativado)**
-    *   Parar o contêiner do Redis: `docker-compose -f linkextractor/step6/docker-compose.yml stop redis`.
-    *   Executar os testes com 1, 10, 50 e 100 usuários.
-    *   Reiniciar o Redis ao final: `docker-compose -f linkextractor/step6/docker-compose.yml start redis`.
-
-2.  **Executar Testes com API Python (com e sem cache)**
-    *   Alterar o arquivo `linkextractor/step6/docker-compose.yml` para usar a imagem da API Python (ex: `image: linkextractor-api:step6-python`).
-    *   Reconstruir o ambiente com `docker-compose up -d --build`.
-    *   Repetir a execução dos testes com 1, 10, 50 e 100 usuários, primeiro com o Redis ligado e depois com ele desligado.
-
-3.  **Consolidar e Analisar os Resultados**
-    *   Reunir os dados de todos os 16 arquivos `.csv`.
-    *   Organizar os dados em uma única planilha (Excel, Google Sheets, etc.).
-    *   Calcular métricas importantes como tempo de resposta médio, mediana, p95, e taxa de falhas.
-
-4.  **Elaborar o Relatório Final**
-    *   Criar gráficos comparativos para visualizar o impacto da linguagem (Ruby vs. Python) e do cache.
-    *   Escrever as conclusões com base nos dados coletados, explicando os resultados observados.
+Os testes demonstraram o impacto significativo do uso de cache (Redis) no desempenho das APIs, reduzindo o tempo de resposta e aumentando o throughput. Além disso, foi possível comparar o desempenho entre as implementações em Python e Ruby, destacando as vantagens e desvantagens de cada abordagem.
