@@ -7,8 +7,8 @@ O objetivo foi comparar o desempenho de duas implementações de API (Python e R
 ## Equipe
 
 - João Pedro Rego Magalhães - Matrícula: 2517985
-- João Pedro Monteiro
-- José Ricardo Ladislau Colombo 2315044
+- João Pedro Monteiro - 2224191
+- José Ricardo Ladislau Colombo - 2315044
 
 ## Ferramenta de Teste de Carga
 
