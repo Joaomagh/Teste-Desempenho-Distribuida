@@ -1,0 +1,13 @@
+Cenario,Users,Requests,Failures,Fail_Rate_%,Avg_Resp_ms,Req_per_sec,P95_ms
+Python Sem Cache,1,1,0,0.0,3680.6,0.27,3700
+Python Sem Cache,10,42,2,4.8,10158.5,0.72,45000
+Python Sem Cache,50,287,11,3.8,7903.3,4.91,40000
+Python Com Cache,1,1,0,0.0,133.6,7.34,130
+Python Com Cache,10,1588,157,9.9,208.8,27.03,960
+Python Com Cache,50,6107,582,9.5,241.5,103.86,880
+Ruby Sem Cache,1,6,2,33.3,4578.9,0.22,20000
+Ruby Sem Cache,10,113,14,12.4,4236.6,1.94,26000
+Ruby Sem Cache,50,388,48,12.4,6249.4,6.58,32000
+Ruby Com Cache,1,60,12,20.0,328.8,2.18,1400
+Ruby Com Cache,10,1568,314,20.0,213.8,26.82,1100
+Ruby Com Cache,50,2577,542,21.0,903.3,43.95,3100

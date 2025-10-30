@@ -32,10 +32,9 @@ class LinkExtractorUser(HttpUser):
         uma para cada URL na lista `test_urls`.
         Isso corresponde ao cenário de teste principal.
         """
-        headers = {"Content-Type": "application/json"}
         for url_to_test in self.test_urls:
-            # O endpoint da API é /api/ e espera um JSON com a chave "url"
-            self.client.post("/api/", json={"url": url_to_test}, headers=headers, name="/api/[url]")
+            # O endpoint da API é GET /api/<url> (tanto Python quanto Ruby)
+            self.client.get(f"/api/{url_to_test}", name="/api/[url]")
 
     def on_start(self):
         """
@@ -46,8 +45,9 @@ class LinkExtractorUser(HttpUser):
         pass
 
 # Para executar este teste, use o comando no terminal:
-# locust -f locustfile.py --host http://localhost:4567
+# Para API Python (step5): locust -f locustfile.py --host http://localhost:5000
+# Para API Ruby (step6): locust -f locustfile.py --host http://localhost:4567
 #
 # Onde:
 # -f locustfile.py: Especifica o arquivo de teste.
-# --host http://localhost:4567: Define o alvo do teste, que é a nossa API Ruby rodando via Docker.
+# --host: Define o alvo do teste (porta varia conforme o step)

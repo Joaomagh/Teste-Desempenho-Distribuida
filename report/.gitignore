@@ -1,0 +1,5 @@
+# Ignore any intermediate files
+*.pyc
+__pycache__/
+plots/
+collected_results/
